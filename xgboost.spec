@@ -4,12 +4,12 @@
 #
 Name     : xgboost
 Version  : 1.1.1
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/aa/08/779aaa15de09590fad94cf533e3cc94b967d71b0daddaa2180685712be28/xgboost-1.1.1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/aa/08/779aaa15de09590fad94cf533e3cc94b967d71b0daddaa2180685712be28/xgboost-1.1.1.tar.gz
 Summary  : XGBoost Python Package
 Group    : Development/Tools
-License  : Apache-2.0
+License  : Apache-2.0 BSD-3-Clause
 Requires: xgboost-license = %{version}-%{release}
 Requires: xgboost-python = %{version}-%{release}
 Requires: xgboost-python3 = %{version}-%{release}
@@ -31,6 +31,8 @@ BuildRequires : numpy
 BuildRequires : pandas
 BuildRequires : scikit-learn
 BuildRequires : scipy
+# Suppress generation of debuginfo
+%global debug_package %{nil}
 
 %description
 XGBoost Python Package
@@ -89,7 +91,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1595024002
+export SOURCE_DATE_EPOCH=1595024241
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -105,7 +107,9 @@ python3 setup.py build
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/xgboost
+cp %{_builddir}/xgboost-1.1.1/xgboost/LICENSE %{buildroot}/usr/share/package-licenses/xgboost/4d98c20884442064704475a2c7092515382cfe48
 cp %{_builddir}/xgboost-1.1.1/xgboost/dmlc-core/LICENSE %{buildroot}/usr/share/package-licenses/xgboost/92170cdc034b2ff819323ff670d3b7266c8bffcd
+cp %{_builddir}/xgboost-1.1.1/xgboost/rabit/LICENSE %{buildroot}/usr/share/package-licenses/xgboost/6f755c9a3e0bbbfda2f9a37a7102e0606ea145f5
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -181,6 +185,8 @@ echo ----[ mark ]----
 
 %files license
 %defattr(0644,root,root,0755)
+/usr/share/package-licenses/xgboost/4d98c20884442064704475a2c7092515382cfe48
+/usr/share/package-licenses/xgboost/6f755c9a3e0bbbfda2f9a37a7102e0606ea145f5
 /usr/share/package-licenses/xgboost/92170cdc034b2ff819323ff670d3b7266c8bffcd
 
 %files python
